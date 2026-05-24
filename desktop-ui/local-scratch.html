@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Scratch notes — Alysum (local)</title>
+  <link rel="icon" type="image/png" href="/Alysum-3.png" />
+  <script src="/js/alysum-appearance-boot.js"></script>
+  <link rel="stylesheet" href="/css/gradient-themes.css?v=6" />
+  <script src="/js/gradient-theme-sync.js" defer></script>
+  <link rel="stylesheet" href="/css/notebook.css?v=9" />
+  <link rel="stylesheet" href="/css/site-responsive.css?v=1" />
+  <style>
+    .local-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      color: #c4b5fd;
+      background: rgba(124, 58, 237, 0.12);
+      border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+    }
+    .local-banner a {
+      color: #e9d5ff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .local-banner a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="scratch-page">
+  <div class="local-banner">
+    <span>Local mode — notes stay on this device only.</span>
+    <a href="/desktop/local.html">← Local workspace</a>
+  </div>
+  <div class="scratch-shell">
+    <header class="scratch-hero">
+      <div>
+        <h1>Scratch notes</h1>
+        <p>Jot ideas offline. Nothing is synced to the cloud until you sign in.</p>
+      </div>
+      <div class="scratch-hero-actions">
+        <a class="scratch-btn scratch-btn-ghost" href="/desktop/local.html">Workspace</a>
+      </div>
+    </header>
+    <div class="scratch-grid">
+      <aside class="scratch-panel">
+        <div class="scratch-side-head">Tree</div>
+        <div class="scratch-side-tools">
+          <button type="button" class="scratch-tool-btn" id="scNewNote">＋ Note</button>
+          <button type="button" class="scratch-tool-btn" id="scNewFolder">📁</button>
+          <button type="button" class="scratch-tool-btn" id="scDel" style="flex:0 0 auto">⌫</button>
+        </div>
+        <input id="scFind" class="nb-quick-open" type="search" placeholder="Search…" autocomplete="off" style="margin:0;border-radius:0;border-left:none;border-right:none" />
+        <div id="scTree" class="scratch-tree"></div>
+      </aside>
+      <section class="scratch-panel">
+        <div class="scratch-editor-head">
+          <input id="scTitle" class="scratch-title-input" type="text" placeholder="Untitled" />
+        </div>
+        <div id="scBody" class="scratch-body nb-body-ce" contenteditable="false" spellcheck="true" data-placeholder="Jot ideas. [[Note title]] links; matching note titles auto-link after a pause."></div>
+        <footer class="scratch-status" id="scStatus">Saved locally</footer>
+      </section>
+    </div>
+  </div>
+  <script type="module">
+    import { enableDesktopLocalHost } from "/js/desktop-auth.js?v=1";
+    import { bindVaultUI } from "/js/alysum-vault-ui.js?v=17";
+
+    enableDesktopLocalHost();
+
+    const LOCAL_VAULT_KEY = "alysum-local-host-vault";
+
+    bindVaultUI(
+      {
+        tree: document.getElementById("scTree"),
+        find: document.getElementById("scFind"),
+        title: document.getElementById("scTitle"),
+        body: document.getElementById("scBody"),
+        newNote: document.getElementById("scNewNote"),
+        newFolder: document.getElementById("scNewFolder"),
+        deleteItem: document.getElementById("scDel"),
+      },
+      {
+        storageKey: LOCAL_VAULT_KEY,
+        compact: true,
+        setStatus: (msg) => {
+          const el = document.getElementById("scStatus");
+          if (el) el.textContent = msg || "Saved locally";
+        },
+      }
+    );
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "name": "alysum-desktop",
+  "productName": "Alysum",
+  "version": "1.0.0",
+  "description": "Alysum writing studio for desktop",
+  "author": "Alysum",
+  "private": true,
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "site:update": "git submodule update --remote --merge site",
+    "predist": "node scripts/check-site.cjs",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.alysum.desktop",
+    "productName": "Alysum",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "desktop-ui/**/*",
+      "site/**/*",
+      "package.json",
+      "!site/node_modules/**",
+      "!site/serviceAccountKey.json",
+      "!site/.env",
+      "!**/.git/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "site/Alysum-3.png",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Alysum"
+    }
+  },
+  "devDependencies": {
+    "electron": "^35.7.5",
+    "electron-builder": "^25.1.8"
+  }
+}

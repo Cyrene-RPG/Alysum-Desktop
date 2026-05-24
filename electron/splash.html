@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alysum</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-app-region: drag;
+      user-select: none;
+    }
+
+    .splash {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #020b18;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 24px 80px rgba(0, 0, 0, 0.65),
+        0 0 120px rgba(124, 58, 237, 0.25);
+    }
+
+    .splash.exiting {
+      animation: splash-out 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes splash-out {
+      to {
+        opacity: 0;
+        transform: scale(1.04);
+        filter: blur(6px);
+      }
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .aurora {
+      position: absolute;
+      inset: -30%;
+      pointer-events: none;
+      filter: blur(64px) saturate(1.2);
+      opacity: 0.7;
+      animation: aurora-drift 14s ease-in-out infinite alternate;
+    }
+
+    .aurora--a {
+      background:
+        radial-gradient(ellipse 50% 45% at 20% 30%, rgba(124, 58, 237, 0.55), transparent 70%),
+        radial-gradient(ellipse 45% 40% at 80% 20%, rgba(167, 139, 250, 0.35), transparent 68%);
+    }
+
+    .aurora--b {
+      animation-duration: 18s;
+      animation-direction: alternate-reverse;
+      opacity: 0.5;
+      background:
+        radial-gradient(ellipse 40% 38% at 70% 75%, rgba(91, 33, 182, 0.45), transparent 72%),
+        radial-gradient(ellipse 35% 32% at 15% 80%, rgba(196, 181, 253, 0.22), transparent 70%);
+    }
+
+    @keyframes aurora-drift {
+      from { transform: translate3d(-2%, -1%, 0) scale(1); }
+      to   { transform: translate3d(3%, 2%, 0) scale(1.08); }
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 10px;
+      padding: 32px;
+    }
+
+    .logo-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-glow {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.45), transparent 68%);
+      animation: glow-pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { transform: scale(0.92); opacity: 0.55; }
+      50%      { transform: scale(1.08); opacity: 0.9; }
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      object-fit: cover;
+      position: relative;
+      animation: logo-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+      box-shadow: 0 12px 40px rgba(124, 58, 237, 0.45);
+    }
+
+    @keyframes logo-in {
+      from { opacity: 0; transform: scale(0.6) rotate(-8deg); }
+      to   { opacity: 1; transform: scale(1) rotate(0); }
+    }
+
+    .title {
+      margin-top: 18px;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #f8fafc 0%, #c4b5fd 45%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: title-in 0.8s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes title-in {
+      from { opacity: 0; transform: translateY(12px); letter-spacing: 0.4em; }
+      to   { opacity: 1; transform: translateY(0); letter-spacing: 0.14em; }
+    }
+
+    .tagline {
+      color: #94a3b8;
+      font-size: 0.82rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      animation: title-in 0.8s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .stroke {
+      margin-top: 22px;
+      width: 160px;
+      height: 3px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .stroke-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #5b21b6, #a78bfa, #7c3aed);
+      box-shadow: 0 0 20px rgba(167, 139, 250, 0.65);
+      animation: stroke-draw 2.2s 0.5s ease-in-out infinite;
+    }
+
+    @keyframes stroke-draw {
+      0%   { width: 0%;   transform: translateX(0); }
+      45%  { width: 100%; transform: translateX(0); }
+      55%  { width: 100%; transform: translateX(0); }
+      100% { width: 0%;   transform: translateX(100%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash" id="splash">
+    <canvas id="particles" aria-hidden="true"></canvas>
+    <div class="aurora aurora--a" aria-hidden="true"></div>
+    <div class="aurora aurora--b" aria-hidden="true"></div>
+
+    <div class="content">
+      <div class="logo-wrap">
+        <div class="logo-glow" aria-hidden="true"></div>
+        <img class="logo" src="../site/Alysum-3.png" alt="" width="72" height="72" />
+      </div>
+      <div class="title">Alysum</div>
+      <div class="tagline">Writing studio</div>
+      <div class="stroke" aria-hidden="true"><div class="stroke-fill"></div></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const canvas = document.getElementById("particles");
+      const ctx = canvas.getContext("2d");
+      const splash = document.getElementById("splash");
+      let particles = [];
+      let raf = 0;
+      let exiting = false;
+
+      function resize() {
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        canvas.style.width = window.innerWidth + "px";
+        canvas.style.height = window.innerHeight + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function seedParticles() {
+        particles = Array.from({ length: 48 }, () => ({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          r: Math.random() * 1.6 + 0.4,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          a: Math.random() * 0.5 + 0.2,
+          hue: Math.random() > 0.7 ? 270 : 0,
+        }));
+      }
+
+      function tick() {
+        if (exiting) return;
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < -10) p.x = window.innerWidth + 10;
+          if (p.x > window.innerWidth + 10) p.x = -10;
+          if (p.y < -10) p.y = window.innerHeight + 10;
+          if (p.y > window.innerHeight + 10) p.y = -10;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.hue
+            ? `rgba(167, 139, 250, ${p.a})`
+            : `rgba(248, 250, 252, ${p.a * 0.7})`;
+          ctx.fill();
+        }
+
+        raf = requestAnimationFrame(tick);
+      }
+
+      function startExit() {
+        if (exiting) return;
+        exiting = true;
+        cancelAnimationFrame(raf);
+        splash.classList.add("exiting");
+      }
+
+      window.addEventListener("resize", () => {
+        resize();
+        seedParticles();
+      });
+
+      resize();
+      seedParticles();
+      tick();
+
+      if (window.splashApi) {
+        window.splashApi.onFinish(startExit);
+      }
+    })();
+  </script>
+</body>
+</html>

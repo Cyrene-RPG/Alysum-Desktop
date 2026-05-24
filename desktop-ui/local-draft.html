@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Local drafts — Alysum</title>
+  <link rel="icon" type="image/png" href="/Alysum-3.png" />
+  <script src="/js/alysum-appearance-boot.js"></script>
+  <link rel="stylesheet" href="/css/gradient-themes.css?v=6" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: #070d18;
+      color: #f1f5f9;
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(34, 197, 94, 0.2);
+      background: rgba(34, 197, 94, 0.08);
+      font-size: 0.82rem;
+      color: #86efac;
+    }
+    .bar a { color: #bbf7d0; font-weight: 600; text-decoration: none; }
+    .bar a:hover { text-decoration: underline; }
+    .layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      height: calc(100vh - 46px);
+    }
+  .sidebar {
+      border-right: 1px solid rgba(255,255,255,0.08);
+      padding: 14px;
+      overflow-y: auto;
+      background: rgba(6, 12, 22, 0.6);
+    }
+    .sidebar h2 {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+    .draft-list { display: flex; flex-direction: column; gap: 6px; }
+    .draft-item {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      background: rgba(255,255,255,0.03);
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      font: inherit;
+    }
+    .draft-item:hover { background: rgba(255,255,255,0.06); }
+    .draft-item.is-active {
+      border-color: rgba(34, 197, 94, 0.35);
+      background: rgba(34, 197, 94, 0.1);
+    }
+    .draft-item-title { font-weight: 600; font-size: 0.9rem; }
+    .draft-item-meta { font-size: 0.72rem; color: #94a3b8; margin-top: 4px; }
+    .sidebar-actions { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .btn {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: #e2e8f0;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn:hover { background: rgba(255,255,255,0.09); }
+    .btn-danger { color: #fca5a5; border-color: rgba(239,68,68,0.25); }
+    .editor {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .editor-head { padding: 16px 20px 0; }
+    .title-input {
+      width: 100%;
+      padding: 12px 0;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: transparent;
+      color: #f8fafc;
+      font-size: 1.5rem;
+      font-weight: 700;
+      outline: none;
+    }
+    .body-input {
+      flex: 1;
+      width: 100%;
+      padding: 20px;
+      border: none;
+      resize: none;
+      background: transparent;
+      color: #e2e8f0;
+      font-size: 1rem;
+      line-height: 1.65;
+      outline: none;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .status {
+      padding: 8px 20px 12px;
+      font-size: 0.78rem;
+      color: #64748b;
+    }
+    .empty {
+      padding: 48px 24px;
+      text-align: center;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+    @media (max-width: 800px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { max-height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <span>Local drafts — saved only on this device</span>
+    <a href="/desktop/local.html">← Local workspace</a>
+  </div>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2>Your drafts</h2>
+      <div class="draft-list" id="draftList"></div>
+      <div class="sidebar-actions">
+        <button type="button" class="btn" id="newDraftBtn">+ New draft</button>
+        <button type="button" class="btn btn-danger" id="deleteDraftBtn" hidden>Delete draft</button>
+      </div>
+    </aside>
+    <section class="editor">
+      <div class="editor-head">
+        <input class="title-input" id="titleInput" type="text" placeholder="Untitled draft" />
+      </div>
+      <textarea class="body-input" id="bodyInput" placeholder="Start writing…"></textarea>
+      <footer class="status" id="status">Saved locally</footer>
+    </section>
+  </div>
+  <script type="module">
+    import { enableDesktopLocalHost } from "/js/desktop-auth.js?v=1";
+
+    enableDesktopLocalHost();
+
+    const STORAGE_KEY = "alysum-local-drafts-v1";
+    const draftList = document.getElementById("draftList");
+    const titleInput = document.getElementById("titleInput");
+    const bodyInput = document.getElementById("bodyInput");
+    const statusEl = document.getElementById("status");
+    const deleteDraftBtn = document.getElementById("deleteDraftBtn");
+
+    let drafts = [];
+    let activeId = null;
+    let saveTimer = null;
+
+    function loadDrafts() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        drafts = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(drafts)) drafts = [];
+      } catch {
+        drafts = [];
+      }
+    }
+
+    function persist() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
+    }
+
+    function formatWhen(ts) {
+      const d = new Date(ts);
+      return d.toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+    }
+
+    function renderList() {
+      draftList.innerHTML = "";
+      if (!drafts.length) {
+        draftList.innerHTML = '<p class="empty" style="padding:12px 0;font-size:0.84rem">No drafts yet.</p>';
+        deleteDraftBtn.hidden = true;
+        return;
+      }
+      for (const d of drafts.sort((a, b) => b.updatedAt - a.updatedAt)) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "draft-item" + (d.id === activeId ? " is-active" : "");
+        btn.innerHTML = `<div class="draft-item-title">${escapeHtml(d.title || "Untitled")}</div><div class="draft-item-meta">${formatWhen(d.updatedAt)}</div>`;
+        btn.addEventListener("click", () => selectDraft(d.id));
+        draftList.appendChild(btn);
+      }
+      deleteDraftBtn.hidden = !activeId;
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+
+    function selectDraft(id) {
+      activeId = id;
+      const d = drafts.find((x) => x.id === id);
+      if (!d) return;
+      titleInput.value = d.title || "";
+      bodyInput.value = d.body || "";
+      renderList();
+      scheduleSave();
+    }
+
+    function scheduleSave() {
+      clearTimeout(saveTimer);
+      statusEl.textContent = "Saving…";
+      saveTimer = setTimeout(saveNow, 400);
+    }
+
+    function saveNow() {
+      if (!activeId) return;
+      const d = drafts.find((x) => x.id === activeId);
+      if (!d) return;
+      d.title = titleInput.value.trim() || "Untitled";
+      d.body = bodyInput.value;
+      d.updatedAt = Date.now();
+      persist();
+      renderList();
+      statusEl.textContent = "Saved locally at " + formatWhen(d.updatedAt);
+    }
+
+    function newDraft() {
+      const id = "d-" + Date.now();
+      const draft = { id, title: "Untitled", body: "", updatedAt: Date.now() };
+      drafts.unshift(draft);
+      persist();
+      selectDraft(id);
+      titleInput.focus();
+      titleInput.select();
+    }
+
+    document.getElementById("newDraftBtn").addEventListener("click", newDraft);
+    deleteDraftBtn.addEventListener("click", () => {
+      if (!activeId || !confirm("Delete this local draft?")) return;
+      drafts = drafts.filter((d) => d.id !== activeId);
+      activeId = drafts[0]?.id || null;
+      persist();
+      if (activeId) selectDraft(activeId);
+      else {
+        titleInput.value = "";
+        bodyInput.value = "";
+        renderList();
+      }
+    });
+
+    titleInput.addEventListener("input", scheduleSave);
+    bodyInput.addEventListener("input", scheduleSave);
+
+    loadDrafts();
+    if (drafts.length) selectDraft(drafts[0].id);
+    else newDraft();
+  </script>
+</body>
+</html>
