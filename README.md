@@ -58,6 +58,25 @@ git add site
 git commit -m "Bump site submodule for …"
 ```
 
+## Download & share (friends)
+
+- In the app: open **Download for Windows · Share with a friend** on the sign-in screen, or go to `/desktop/download.html`.
+- Public link (after you publish a release): [Latest release](https://github.com/Cyrene-RPG/Alysum-Desktop/releases/latest)
+
+### Publish a new installer
+
+```bash
+npm run release:win
+# Installer: dist/Alysum-Setup-<version>.exe
+```
+
+Upload that file to [GitHub Releases](https://github.com/Cyrene-RPG/Alysum-Desktop/releases/new), **or** tag a version and let CI build it:
+
+```bash
+git tag v1.1.0
+git push origin v1.1.0
+```
+
 ## Requirements
 
 - Node.js 18+

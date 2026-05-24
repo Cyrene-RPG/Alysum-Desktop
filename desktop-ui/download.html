@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Download Alysum for Windows</title>
+  <link rel="icon" type="image/png" href="/Alysum-3.png" />
+  <script src="/js/alysum-appearance-boot.js"></script>
+  <link rel="stylesheet" href="/css/gradient-themes.css?v=6" />
+  <script src="/js/gradient-theme-sync.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #020b18;
+      --panel: rgba(12, 20, 36, 0.92);
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #7c3aed;
+      --ok: #86efac;
+    }
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 40px 20px 56px;
+    }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 28px;
+    }
+    .back:hover { color: #fff; }
+    .card {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 22px;
+      padding: 32px 28px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .brand img {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+    }
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+    .ver {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .lead {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+    .btn-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6d28d9, #7c3aed);
+      color: #fff;
+      box-shadow: 0 12px 32px rgba(124, 58, 237, 0.35);
+    }
+    .btn-primary:hover { filter: brightness(1.06); }
+    .btn-primary:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      filter: none;
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
+    .status {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 1.2em;
+    }
+    .status.ok { color: var(--ok); }
+    .share-box {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .share-box h2 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .link-field {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .link-field input {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.25);
+      color: #e2e8f0;
+      font-size: 13px;
+    }
+    .link-field button {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .hints {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .hints li { margin-left: 18px; margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="/desktop/home.html">← Back to Alysum</a>
+
+    <div class="card">
+      <div class="brand">
+        <img src="/Alysum-3.png" alt="" width="48" height="48" />
+        <div>
+          <h1>Alysum for Windows</h1>
+          <p class="ver" id="versionLabel">Loading…</p>
+        </div>
+      </div>
+
+      <p class="lead">
+        Install the desktop app on any PC. Your friend can sign in with an account or use
+        <strong>Host Local Version</strong> to write offline — no account required.
+      </p>
+
+      <div class="btn-row">
+        <a class="btn btn-primary" id="downloadBtn" href="#" download>Download for Windows</a>
+        <button type="button" class="btn btn-secondary" id="openReleasesBtn">Open on GitHub</button>
+      </div>
+      <p class="status" id="statusEl" role="status"></p>
+
+      <div class="share-box">
+        <h2>Send to a friend</h2>
+        <div class="link-field">
+          <input type="text" id="shareLink" readonly aria-label="Share link" />
+          <button type="button" id="copyBtn">Copy link</button>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" id="shareBtn">Share…</button>
+          <button type="button" class="btn btn-secondary" id="emailBtn">Email invite</button>
+        </div>
+      </div>
+
+      <ul class="hints">
+        <li>Windows 10 or 11 (64-bit)</li>
+        <li>~150 MB download · installs like any normal app</li>
+        <li>SmartScreen may ask you to confirm — Alysum is not code-signed yet</li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="module">
+    const meta = await fetch("/desktop/release-meta.json").then((r) => r.json()).catch(() => ({}));
+    const owner = meta.githubOwner || "Cyrene-RPG";
+    const repo = meta.githubRepo || "Alysum-Desktop";
+    const version = meta.version || "1.1.0";
+    const prefix = meta.assetPrefix || "Alysum-Setup-";
+    const releasePage =
+      meta.releasePage || `https://github.com/${owner}/${repo}/releases/latest`;
+
+    const versionLabel = document.getElementById("versionLabel");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const openReleasesBtn = document.getElementById("openReleasesBtn");
+    const statusEl = document.getElementById("statusEl");
+    const shareLink = document.getElementById("shareLink");
+    const copyBtn = document.getElementById("copyBtn");
+    const shareBtn = document.getElementById("shareBtn");
+    const emailBtn = document.getElementById("emailBtn");
+
+    versionLabel.textContent = "Version " + version;
+    shareLink.value = releasePage;
+    openReleasesBtn.addEventListener("click", () => {
+      window.open(releasePage, "_blank", "noopener,noreferrer");
+    });
+
+    let downloadUrl = releasePage;
+
+    async function resolveDownloadUrl() {
+      statusEl.textContent = "Finding latest installer…";
+      statusEl.classList.remove("ok");
+      try {
+        const api = `https://api.github.com/repos/${owner}/${repo}/releases/latest`;
+        const res = await fetch(api, { headers: { Accept: "application/vnd.github+json" } });
+        if (!res.ok) throw new Error("No release yet");
+        const data = await res.json();
+        const asset = (data.assets || []).find(
+          (a) => a.name && a.name.endsWith(".exe") && a.name.startsWith(prefix)
+        );
+        if (asset?.browser_download_url) {
+          downloadUrl = asset.browser_download_url;
+          statusEl.textContent = "Ready — " + (asset.name || "installer");
+          statusEl.classList.add("ok");
+          downloadBtn.href = downloadUrl;
+          downloadBtn.removeAttribute("disabled");
+          return;
+        }
+      } catch {
+        /* fall through */
+      }
+      downloadBtn.href = releasePage;
+      statusEl.textContent = "Open GitHub Releases to download the installer.";
+    }
+
+    await resolveDownloadUrl();
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(shareLink.value);
+        statusEl.textContent = "Link copied — paste in chat or email.";
+        statusEl.classList.add("ok");
+      } catch {
+        shareLink.select();
+        document.execCommand("copy");
+        statusEl.textContent = "Link selected — press Ctrl+C to copy.";
+      }
+    });
+
+    shareBtn.addEventListener("click", async () => {
+      const text = `Try Alysum on Windows — writing studio you can install. Download: ${shareLink.value}`;
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "Alysum for Windows",
+            text: "Install Alysum — write locally or sign in to sync.",
+            url: shareLink.value,
+          });
+          return;
+        } catch {
+          /* cancelled */
+        }
+      }
+      copyBtn.click();
+    });
+
+    emailBtn.addEventListener("click", () => {
+      const subject = encodeURIComponent("Alysum — desktop app for writers");
+      const body = encodeURIComponent(
+        `Hey,\n\nI use Alysum for writing. You can install the Windows app here:\n${shareLink.value}\n\nAfter installing, choose "Host Local Version" if you want to try it without an account.\n\n`
+      );
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    });
+  </script>
+</body>
+</html>

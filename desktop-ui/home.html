@@ -337,6 +337,23 @@
     .msg--error { color: #fecaca; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.22); }
     .msg--success { color: #bbf7d0; background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.22); }
 
+    .share-install {
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .share-install a {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #a78bfa;
+      text-decoration: none;
+    }
+
+    .share-install a:hover {
+      color: #e9d5ff;
+      text-decoration: underline;
+    }
+
     .local-host {
       margin-top: 20px;
       padding-top: 18px;
@@ -446,6 +463,10 @@
 
       <p class="msg msg--error" id="error-msg" role="alert"></p>
       <p class="msg msg--success" id="success-msg" role="status"></p>
+
+      <p class="share-install">
+        <a href="/desktop/download.html">Download for Windows · Share with a friend</a>
+      </p>
 
       <div class="local-host">
         <p class="local-host-label">Don't want to make an account?</p>
