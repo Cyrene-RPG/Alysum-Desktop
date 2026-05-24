@@ -77,6 +77,10 @@ git tag v1.1.0
 git push origin v1.1.0
 ```
 
+**CI note:** `site/` is a private submodule. For automated releases, add a repo secret **`GH_PAT`** (classic PAT with `repo` scope) at  
+[Settings → Secrets → Actions](https://github.com/Cyrene-RPG/Alysum-Desktop/settings/secrets/actions).  
+Without it, checkout may fail — you can still upload `dist/Alysum-Setup-*.exe` manually.
+
 ## Requirements
 
 - Node.js 18+
